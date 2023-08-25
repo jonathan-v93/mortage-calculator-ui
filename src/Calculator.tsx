@@ -79,11 +79,6 @@ export const Calculator = () => {
           />
         </div>
         <div>
-          {/* <TextField
-            label="Payment schedule"
-            value={paymentSchedule}
-            onChange={(e) => setPaymentSchedule(e.target.value)}
-          /> */}
           <FormControl style={{ width: "25ch", marginBottom: "1em" }}>
             <InputLabel>Payment schedule</InputLabel>
             <Select
