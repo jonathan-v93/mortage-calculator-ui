@@ -13,15 +13,13 @@ export const GetMortgageCalculation = (queryString: string) => {
       axios
         .get(`${baseURL}${queryString}`)
         .then((response) => {
-          console.log(response);
           setIsLoading(false);
           setCalcultedResponse(response.data);
         })
         .catch((err) => {
           setIsLoading(false);
           if (err.response) {
-            console.log("here", err.response.data);
-            setCalcultedResponse(err.response.data.message);
+            setCalcultedResponse(err.response.data);
           } else {
             setCalcultedResponse(null);
           }

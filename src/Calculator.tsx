@@ -1,23 +1,19 @@
 import { GetMortgageCalculation } from "./hooks/getMortgageCalculation";
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { PaymentScheduleEnum } from "./models/PaymentSchedule.enum";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export const Calculator = () => {
-  // const GetMortgageCalculation
   const [propertyPrice, setPropertyPrice] = useState("100000");
   const [downPayment, setDownPayment] = useState("10000");
   const [annualInterest, setAnnualInterest] = useState("0.05");
   const [lengthOfMortgage, setLengthOfMortgage] = useState("30");
   const [paymentSchedule, setPaymentSchedule] = useState("1");
   const [queryString, setQueryString] = useState("");
-
-  useEffect(() => {}, []);
 
   const { calculatedResponse, isLoading } = GetMortgageCalculation(queryString);
 
@@ -26,7 +22,7 @@ export const Calculator = () => {
   };
 
   const getCalculation = () => {
-    // validation here
+    // TODO - add validation here
     const query: string = getQueryString();
     setQueryString(query);
   };
