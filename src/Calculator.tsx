@@ -6,6 +6,7 @@ import { useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { PaymentScheduleEnum } from "./models/PaymentSchedule.enum";
 import CircularProgress from "@mui/material/CircularProgress";
+import { ErrorMessageEnum } from "./models/ErrorMessage.enum";
 
 export const Calculator = () => {
   const [propertyPrice, setPropertyPrice] = useState("100000");
@@ -22,9 +23,28 @@ export const Calculator = () => {
   };
 
   const getCalculation = () => {
-    // TODO - add validation here
     const query: string = getQueryString();
     setQueryString(query);
+  };
+
+  const showLengthOfMortgageError = (): boolean => {
+    return (
+      +lengthOfMortgage < 5 ||
+      +lengthOfMortgage > 30 ||
+      +lengthOfMortgage % 5 !== 0
+    );
+  };
+
+  const showAnnulIntertestError = (): boolean => {
+    return +annualInterest <= 0 || +annualInterest > 1;
+  };
+
+  const showDownPaymentError = (): boolean => {
+    return +downPayment < (+propertyPrice / 100) * 10;
+  };
+
+  const showPropertyPriceError = (): boolean => {
+    return +propertyPrice === 0;
   };
 
   return (
@@ -33,7 +53,7 @@ export const Calculator = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "50vh",
+        height: "100vh",
       }}
     >
       <Box
@@ -49,6 +69,10 @@ export const Calculator = () => {
             label="Property price"
             value={propertyPrice}
             onChange={(e) => setPropertyPrice(e.target.value)}
+            error={showPropertyPriceError()}
+            helperText={
+              showPropertyPriceError() ? ErrorMessageEnum.MoreThanZero : null
+            }
           />
         </div>
         <div>
@@ -58,6 +82,12 @@ export const Calculator = () => {
             onChange={(e) => {
               setDownPayment(e.target.value);
             }}
+            error={showDownPaymentError()}
+            helperText={
+              showDownPaymentError()
+                ? ErrorMessageEnum.DownPaymentInsufficient
+                : null
+            }
           />
         </div>
         <div>
@@ -65,6 +95,12 @@ export const Calculator = () => {
             label="Annual interest"
             value={annualInterest}
             onChange={(e) => setAnnualInterest(e.target.value)}
+            error={showAnnulIntertestError()}
+            helperText={
+              showAnnulIntertestError()
+                ? ErrorMessageEnum.InterestInvalid
+                : null
+            }
           />
         </div>
         <div>
@@ -72,6 +108,12 @@ export const Calculator = () => {
             label="Length of mortgage"
             value={lengthOfMortgage}
             onChange={(e) => setLengthOfMortgage(e.target.value)}
+            error={showLengthOfMortgageError()}
+            helperText={
+              showLengthOfMortgageError()
+                ? ErrorMessageEnum.MortgageLength
+                : null
+            }
           />
         </div>
         <div>
