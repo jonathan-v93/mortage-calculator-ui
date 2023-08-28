@@ -36,7 +36,7 @@ export const Calculator = () => {
   };
 
   const showAnnulIntertestError = (): boolean => {
-    return +annualInterest <= 0 || +annualInterest > 1;
+    return +annualInterest <= 0 || +annualInterest >= 1;
   };
 
   const showDownPaymentError = (): boolean => {
