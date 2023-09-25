@@ -16,7 +16,8 @@ export const Calculator = () => {
   const [paymentSchedule, setPaymentSchedule] = useState("1");
   const [queryString, setQueryString] = useState("");
 
-  const { calculatedResponse, isLoading } = GetMortgageCalculation(queryString);
+  const { calculatedResponse, errorMessage, isLoading } =
+    GetMortgageCalculation(queryString);
 
   const getQueryString = (): string => {
     return `?propertyPrice=${propertyPrice}&downPayment=${downPayment}&annualInterest=${annualInterest}&lengthOfMortgage=${lengthOfMortgage}&paymentSchedule=${paymentSchedule}`;
@@ -33,6 +34,16 @@ export const Calculator = () => {
       +lengthOfMortgage > 30 ||
       +lengthOfMortgage % 5 !== 0
     );
+  };
+
+  const getFormattedCurrency = (): string => {
+    return calculatedResponse !== null
+      ? new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "CAD",
+          currencyDisplay: "symbol",
+        }).format(calculatedResponse)
+      : "";
   };
 
   const showAnnulIntertestError = (): boolean => {
@@ -142,8 +153,14 @@ export const Calculator = () => {
           Calculate repayment price
         </Button>
         {!isLoading && calculatedResponse !== null && (
-          <div style={{ marginTop: "2em" }}>Result: {calculatedResponse}</div>
+          <div style={{ marginTop: "2em" }}>
+            Result: {getFormattedCurrency()}
+          </div>
         )}
+        {!isLoading && errorMessage !== null && (
+          <div style={{ marginTop: "2em" }}>Error: {errorMessage}</div>
+        )}
+
         {isLoading && (
           <div
             style={{
